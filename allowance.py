@@ -2,6 +2,9 @@ from datetime import datetime
 
 import gspread
 import json
+import os
+
+DIRECTORY = "D:\\Directory\\allowance"
 
 
 def insert_allowance_entries():
@@ -37,7 +40,7 @@ def get_worksheet():
     """
 
     # Get credentials
-    gc = gspread.service_account(filename='credentials.json')
+    gc = gspread.service_account(filename=os.path.join(DIRECTORY, "credentials.json"))
 
     # Return worksheet
     return gc.open("Allowance_Tracking").worksheet("Transactions")
@@ -59,7 +62,7 @@ def get_birthdays():
     Get kid's birthdays from birthdays.json file and return as a dictionary
     :return:
     """
-    with open("birthdays.json") as file:
+    with open(os.path.join(DIRECTORY, "birthdays.json")) as file:
         return json.load(file)
 
 
