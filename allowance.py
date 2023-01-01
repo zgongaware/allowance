@@ -5,6 +5,10 @@ import json
 
 
 def insert_allowance_entries():
+    """
+    Determine the day of the week.  If it's Friday, add each child's weekly allowance to the predefined Google Worksheet.
+    :return:
+    """
 
     # Get day of the week
     if is_friday():
@@ -27,6 +31,10 @@ def insert_allowance_entries():
 
 
 def get_worksheet():
+    """
+    Get Google worksheet credentials from credentials.json and return the "Transactions" worksheet object
+    :return:
+    """
 
     # Get credentials
     gc = gspread.service_account(filename='credentials.json')
@@ -36,18 +44,30 @@ def get_worksheet():
 
 
 def is_friday():
-    if datetime.now().weekday() == 5:
+    """
+    Determine if it is Friday based on the current timestamp
+    :return:
+    """
+    if datetime.now().weekday() == 4:
         return True
     else:
         return False
 
 
 def get_birthdays():
+    """
+    Get kid's birthdays from birthdays.json file and return as a dictionary
+    :return:
+    """
     with open("birthdays.json") as file:
         return json.load(file)
 
 
 def create_transaction():
+    """
+    Create a list of lists with each kid's allowance for the week
+    :return:
+    """
     transaction = []
     for kid, birthday in get_birthdays().items():
         entry = [kid.title(), datetime.now().strftime("%m/%d/%Y"), get_allowance_amount(birthday)]
@@ -56,6 +76,11 @@ def create_transaction():
 
 
 def get_allowance_amount(birthday: str):
+    """
+    Based on the birthday date string, determine how much allowance the child should receive
+    :param birthday:
+    :return:
+    """
     # Convert to datetime object
     bd = datetime.strptime(birthday, "%Y-%m-%d")
 
